@@ -3,4 +3,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@vueuse/nuxt'],
   ssr: false,
+  runtimeConfig: {
+    openai: {
+      OPENAI_API_KEY: process.env.NUXT_OPENAI_API_KEY,
+    },
+  },
 })
