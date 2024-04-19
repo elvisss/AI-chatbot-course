@@ -19,17 +19,16 @@ export const useChatAi = ({ agent }: { agent: Agent }) => {
     try {
       state.value = 'loading'
 
-      const result =
-        await fetchWithTimeout<OpenAI.Chat.Completions.ChatCompletion>(
-          `/api/ai`,
-          {
-            method: 'POST',
-            body: {
-              ...options,
-              agent: `${agent}Agent`,
-            },
-          }
-        )
+      const result = await fetchWithTimeout<OpenAI.Chat.Completions.ChatCompletion>(
+        `/api/ai`,
+        {
+          method: 'POST',
+          body: {
+            ...options,
+            agent: `${agent}Agent`,
+          },
+        }
+      )
       if (!result.choices || !result.usage) {
         throw new Error('Invalid AI response')
       }

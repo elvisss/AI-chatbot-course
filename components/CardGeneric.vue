@@ -1,10 +1,27 @@
 <script setup lang="ts">
-import type { AsyncState } from '@/types'
+import type { AsyncState } from '~~/types'
 const props = defineProps<{
   title?: string
   body?: string
   state?: AsyncState
 }>()
+
+defineEmits<{
+  (e: 'update:body', payload: string): void
+}>()
+
+const textarea = ref()
+
+watch(
+  () => props.body,
+  () => {
+    nextTick(() => {
+      if (!textarea.value) return
+      textarea.value.style.height = ''
+      textarea.value.style.height = textarea.value.scrollHeight + 'px'
+    })
+  }
+)
 
 const isError = computed(() => props.state === 'error')
 const isLoading = computed(() => props.state === 'loading')
@@ -20,17 +37,32 @@ const isLoading = computed(() => props.state === 'loading')
         </span>
       </h2>
 
-      <div v-if="body">
+      <div>
         <hr class="opacity-10 pb-5" />
-        <pre class="whitespace-pre-wrap font-sans text-lg">{{ body }}</pre>
-      </div>
-      <div v-else>
-        <span class="italic opacity-80">
-          Import an article to generate an announcement
-        </span>
+        <div>
+          <slot name="body">
+            <textarea
+              ref="textarea"
+              v-if="body"
+              class="w-full bg-transparent font-sans text-lg resize-none mb-5 p-2"
+              :value="body"
+              @input="
+                $emit(
+                  'update:body',
+                  ($event.target as HTMLTextAreaElement)?.value || ''
+                )
+              "
+            ></textarea>
+            <div v-else>
+              <span class="italic opacity-80">
+                Import an article to generate an announcement
+              </span>
+            </div>
+          </slot>
+        </div>
       </div>
 
-      <div class="card-actions justify-end" v-if="body">
+      <div class="card-actions justify-end">
         <slot></slot>
       </div>
     </div>

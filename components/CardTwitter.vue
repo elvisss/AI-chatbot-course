@@ -26,7 +26,6 @@ defineExpose({ generate })
     title="Twitter"
     :state="state"
     :body="announcement"
-    class="mb-10"
   >
     <div class="flex w-full justify-between items-center">
       <div class="text-xs">

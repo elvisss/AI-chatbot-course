@@ -6,7 +6,6 @@ const props = defineProps<{
 
 const { chat, state, firstMessage } = useChatAi({ agent: 'facebook' })
 
-const announcement = computed(() => firstMessage.value?.content || '')
 const postURL = computed(() => {
   const url = new URL('https://facebook.com/sharer/sharer.php')
   url.searchParams.set('u', props.url)
@@ -22,7 +21,7 @@ function generate() {
 const { copy } = useClipboard()
 
 function post() {
-  copy(announcement.value || '')
+  copy(firstMessage.value?.content || '')
   setTimeout(() => {
     window.open(postURL.value, '_blank')
   }, 500)
@@ -32,8 +31,15 @@ defineExpose({ generate })
 </script>
 
 <template>
-  <CardGeneric title="Facebook" :state="state" :body="announcement">
+  <CardGeneric
+    title="Facebook"
+    :state="state"
+    :body="firstMessage?.content?.trim()"
+    @update:body="firstMessage ? (firstMessage.content = $event) : null"
+  >
     <button class="btn btn-neutral" @click="generate">Regenerate</button>
-    <a class="btn btn-primary" :href="postURL" @click.prevent="post">Copy Announcement and Post</a>
+    <a class="btn btn-primary" :href="postURL" @click.prevent="post">
+      Copy Announcement and Post
+    </a>
   </CardGeneric>
 </template>
