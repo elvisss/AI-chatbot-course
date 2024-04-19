@@ -1,8 +1,19 @@
 <script setup lang="ts">
-import type { AsyncState } from '@/types'
+const props = defineProps<{
+  url: string
+  temperature: number
+}>()
 
-const announcement = ref('My generated tweet!')
-const state = ref<AsyncState>('complete')
+const { chat, state, firstMessage } = useChatAi({ agent: 'twitter' })
+const announcement = computed(() => firstMessage.value?.content || '')
+
+function generate() {
+  nextTick(() => {
+    chat(props)
+  })
+}
+
+defineExpose({ generate })
 </script>
 <template>
   <CardGeneric
@@ -17,7 +28,7 @@ const state = ref<AsyncState>('complete')
         <strong>{{ announcement.length }}</strong>
       </div>
       <div>
-        <button class="btn btn-neutral">Regenerate</button>
+        <button class="btn btn-neutral" @click="generate">Regenerate</button>
         <a role="button" class="btn btn-primary" target="_blank">Post</a>
       </div>
     </div>
