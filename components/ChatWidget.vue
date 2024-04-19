@@ -21,13 +21,20 @@ const usersTyping = ref<User[]>([])
 // send messages to Chat API here
 // and in the empty function below
 
+const messagesForApi = computed(() => {
+  return messages.value.map((message) => ({
+    role: message.userId,
+    content: message.text,
+  })).slice(-2)
+})
+
 async function handleNewMessage(message: Message) {
   messages.value.push(message)
   usersTyping.value.push(bot.value)
   const res = await $fetch('/api/ai', {
     method: 'POST',
     body: {
-      messages: [{ role: 'user', content: message.text }],
+      messages: messagesForApi.value,
     },
   })
 
