@@ -21,3 +21,12 @@ Content-Type: application/json
     }
   ]
 }
+
+###
+POST http://localhost:3000/api/ai
+Content-Type: application/json
+
+{
+  "agent": "facebookAgent",
+  "url": "https://medium.com/jspoint/javascript-promises-and-async-await-as-fast-as-possible-d7c8c8ff0abc"
+}
