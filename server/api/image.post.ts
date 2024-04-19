@@ -15,37 +15,38 @@ export default defineEventHandler(async (event) => {
     messages: [
       {
         role: 'system',
-        content: 'You are a promt engineer creating DALL-E prompts',
+        content: 'You are a prompt enginer for DALL-E',
       },
       {
         role: 'user',
-        content:
-          `Provide 2 realistic physical objects based on this article: ${url}`,
+        content: `Provide 4 physical items that represent 4 topics from this article: ${url}`,
       },
     ],
     temperature: body.temperature || 1,
   })
 
   if (!completion.choices[0].message.content) {
-    throw new Error('No message returned from OpenAI')
+    throw new Error('DALL-E prompt not generated')
   }
 
-  const openAIPromt = completion.choices[0].message.content
+  const dallePrompt = completion.choices[0].message.content.trim()
 
-  const response = await openai.images.generate({
-    prompt: openAIPromt,
+  const { data } = await openai.images.generate({
+    prompt:
+      'black and white sticker style illustration. stylize the items to be a repeating pattern, white background' +
+      dallePrompt,
     n: 1,
     size: '256x256',
   })
 
-  const imageUrl = response.data[0].url
+  const imageUrl = data[0].url
 
   if (!imageUrl) {
     throw new Error('No image returned from OpenAI')
   }
 
   const res: Buffer = await $fetch(imageUrl, {
-    responseType: 'arrayBuffer'
+    responseType: 'arrayBuffer',
   })
   const base64String = Buffer.from(res).toString('base64')
 
