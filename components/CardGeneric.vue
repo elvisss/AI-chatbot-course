@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { AsyncState } from "@/types";
+import type { AsyncState } from '@/types'
 const props = defineProps<{
-  title?: string;
-  body?: string;
-  state?: AsyncState;
-}>();
+  title?: string
+  body?: string
+  state?: AsyncState
+}>()
 
-const isError = computed(() => props.state === "error");
-const isLoading = computed(() => props.state === "loading");
+const isError = computed(() => props.state === 'error')
+const isLoading = computed(() => props.state === 'loading')
 </script>
 <template>
   <div class="card bg-base-100 shadow-xl border-t-4 border-primary">
@@ -25,9 +25,9 @@ const isLoading = computed(() => props.state === "loading");
         <pre class="whitespace-pre-wrap font-sans text-lg">{{ body }}</pre>
       </div>
       <div v-else>
-        <span class="italic opacity-80"
-          >Import an article to generate an announcement</span
-        >
+        <span class="italic opacity-80">
+          Import an article to generate an announcement
+        </span>
       </div>
 
       <div class="card-actions justify-end" v-if="body">

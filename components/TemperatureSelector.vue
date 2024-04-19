@@ -1,11 +1,13 @@
 <script setup lang="ts">
 defineProps<{
-  modelValue: number;
-}>();
+  modelValue: number
+}>()
+
 defineEmits<{
-  (e: "update:modelValue", payload: number): void;
-}>();
+  (e: 'update:modelValue', payload: number): void
+}>()
 </script>
+
 <template>
   <input
     :value="modelValue"
@@ -23,7 +25,7 @@ defineEmits<{
   />
   Temperature: {{ modelValue }}
   <span class="font-bold" v-if="modelValue >= 0.5">
-    - More random, creative, and risky</span
-  >
-  <span class="font-bold" v-else> - More focused, deterministic, and safe</span>
+    - More random, creative, and risky
+  </span>
+  <span class="font-bold" v-else>- More focused, deterministic, and safe</span>
 </template>

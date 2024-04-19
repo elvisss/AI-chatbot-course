@@ -1,17 +1,17 @@
 <script setup lang="ts">
 const form = ref({
-  url: "",
+  url: '',
   temperature: 1,
-});
+})
 
-const twitterCard = ref();
-const facebookCard = ref();
+const twitterCard = ref()
+const facebookCard = ref()
 
 async function handleImport(e: typeof form.value) {
-  form.value = { ...e };
-  if (!form.value.url) return;
-  twitterCard.value.generate();
-  facebookCard.value.generate();
+  form.value = { ...e }
+  if (!form.value.url) return
+  twitterCard.value.generate()
+  facebookCard.value.generate()
 }
 </script>
 <template>
