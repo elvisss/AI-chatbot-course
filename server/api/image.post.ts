@@ -30,7 +30,24 @@ export default defineEventHandler(async (event) => {
     throw new Error('No message returned from OpenAI')
   }
 
-  console.log('OpenAI response:', completion)
+  const openAIPromt = completion.choices[0].message.content
 
-  return url
+  const response = await openai.images.generate({
+    prompt: openAIPromt,
+    n: 1,
+    size: '256x256',
+  })
+
+  const imageUrl = response.data[0].url
+
+  if (!imageUrl) {
+    throw new Error('No image returned from OpenAI')
+  }
+
+  const res: Buffer = await $fetch(imageUrl, {
+    responseType: 'arrayBuffer'
+  })
+  const base64String = Buffer.from(res).toString('base64')
+
+  return `data:image/jpeg;base64,${base64String}`
 })
