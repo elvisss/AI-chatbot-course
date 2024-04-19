@@ -5,7 +5,13 @@ const props = defineProps<{
 }>()
 
 const { chat, state, firstMessage } = useChatAi({ agent: 'twitter' })
+
 const announcement = computed(() => firstMessage.value?.content || '')
+const postURL = computed(() => {
+  const url = new URL('https://twitter.com/intent/tweet')
+  url.searchParams.set('text', announcement.value)
+  return url.toString()
+})
 
 function generate() {
   nextTick(() => {
@@ -29,7 +35,7 @@ defineExpose({ generate })
       </div>
       <div>
         <button class="btn btn-neutral" @click="generate">Regenerate</button>
-        <a role="button" class="btn btn-primary" target="_blank">Post</a>
+        <a class="btn btn-primary" target="_blank" :href="postURL">Post</a>
       </div>
     </div>
   </CardGeneric>
